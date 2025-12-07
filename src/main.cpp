@@ -19,8 +19,6 @@ int main(){
 	LoadIncomeFromFile();
 	LoadExpenseFromFile(); 
 
-	InputIncome();
-
 	return 0;
 }
 
