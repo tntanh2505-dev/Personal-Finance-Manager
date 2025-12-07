@@ -23,6 +23,8 @@ void addExpenseRecord(Expense newExpense){
     /// Add new expense record
     expense_record.exs[expense_record.size] = newExpense;
     expense_record.size++;
+    
+    addExpenseToBinaryFile(newExpense);
 }
 
 void InputExpense(){
@@ -79,6 +81,26 @@ void LoadExpenseFromFile(){
 
 
     fin.close();
+}
+void LoadExpenseCategoryFromFile(){ 
+    std::fstream fin("data/ExpenseRecord.bin",std::ios::in | std::ios::binary);
+
+    if (!fin.is_open()){
+        std::ofstream fout("data/ExpenseRecord.bin",std::ios::out | std::ios::binary);
+        fout.close();
+        return;
+    }
+
+    //read file content into expense_record
+    int record_count = 0;
+    fin.read(reinterpret_cast<char*>(&record_count), sizeof(record_count));
+
+    //read each expense record and add to expense_record
+    for(int i = 0; i < record_count; ++i){
+        std::string name;
+        fin.read(reinterpret_cast<char*>(&name), sizeof(name));
+        addExpenseCategory(name);
+    }
 }
 
 //managing categories
@@ -145,4 +167,17 @@ void editExpenseCategory(int id, std::string new_name){
 }
 
 
+//binary files
+void addExpenseToBinaryFile(Expense newExpense){
+    std::fstream fout("data/ExpenseRecord.bin", std::ios::out | std::ios::binary | std::ios::app);
+
+    //write expense record to file
+    fout.write(reinterpret_cast<const char*>(&newExpense.date), sizeof(newExpense.date));
+    fout.write(reinterpret_cast<const char*>(&newExpense.category), sizeof(newExpense.category));
+    fout.write(reinterpret_cast<const char*>(&newExpense.amount), sizeof(newExpense.amount));
+    fout.write(reinterpret_cast<const char*>(&newExpense.wallet), sizeof(newExpense.wallet));
+    fout.write(reinterpret_cast<const char*>(&newExpense.description), sizeof(newExpense.description));
+
+    fout.close();
+}
 

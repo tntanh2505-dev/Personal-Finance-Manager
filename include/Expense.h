@@ -45,11 +45,16 @@ extern Expense_Category_Record expense_category_record;
 void InputExpense();
 void addExpenseRecord(Expense newExpense);
 void LoadExpenseFromFile();
+void LoadExpenseCategoryFromFile();
 
 //manage category
 void addExpenseCategory(std::string category_name);
 void listExpenseCategories();
 void removeExpenseCategory(int category_id);
 void editExpenseCategory(int category_id, std::string new_name);
+
+
+//binary file operations
+void addExpenseToBinaryFile(Expense newExpense);
 
 #endif

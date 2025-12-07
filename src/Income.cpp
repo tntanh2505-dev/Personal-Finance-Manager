@@ -3,6 +3,7 @@
 
 Income_Record income_record;
 Income_Source_Record income_source_record;
+
 //add income record to dynamic array
 void addIncomeRecord(Income newIncome){
     //  double the capacity if size reaches capacity
@@ -22,8 +23,23 @@ void addIncomeRecord(Income newIncome){
     /// Add new income record
     income_record.incd[income_record.size] = newIncome;
     income_record.size++;
-}
 
+    //write income record to binary file
+    addToBinaryFile(newIncome);
+}
+void addToBinaryFile(Income newIncome){
+    std::fstream fout("data/IncomeRecord.bin",std::ios::out | std::ios::binary | std::ios::app);
+
+
+    // Write the income record to the file
+    fout.write(reinterpret_cast<char*>(&newIncome.date), sizeof(newIncome.date));
+    fout.write(reinterpret_cast<char*>(&newIncome.source), sizeof(newIncome.source));
+    fout.write(reinterpret_cast<char*>(&newIncome.amount), sizeof(newIncome.amount));
+    fout.write(reinterpret_cast<char*>(&newIncome.wallet), sizeof(newIncome.wallet));
+    fout.write(reinterpret_cast<char*>(&newIncome.description), sizeof(newIncome.description));
+
+    fout.close();
+}
 // Function to input income details from user
 void InputIncome(){
     Income newIncome;
@@ -77,6 +93,26 @@ void LoadIncomeFromFile(){
         fin.read(reinterpret_cast<char*>(&tempIncome.wallet), sizeof(tempIncome.wallet));
         fin.read(reinterpret_cast<char*>(&tempIncome.description), sizeof(tempIncome.description));
         addIncomeRecord(tempIncome);
+    }
+}
+void LoadIncomeSourceFromFile(){ 
+    std::fstream fin("data/IncomeRecord.bin",std::ios::in | std::ios::binary);
+
+    if (!fin.is_open()){
+        std::ofstream fout("data/IncomeRecord.bin",std::ios::out | std::ios::binary);
+        fout.close();
+        return;
+    }
+
+    //read file content into income_source_record
+    int record_count = 0;
+    fin.read(reinterpret_cast<char*>(&record_count), sizeof(record_count));
+
+    //read each income record and add to income_source_record
+    for(int i = 0; i < record_count; ++i){
+        std::string name;
+        fin.read(reinterpret_cast<char*>(&name), sizeof(name));
+        addIncomeSource(name);
     }
 }
 

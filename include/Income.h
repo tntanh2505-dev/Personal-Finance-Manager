@@ -45,9 +45,10 @@ extern Income_Record income_record;
 
 void InputIncome();
 void addIncomeRecord(Income newIncome);
-
+void addToBinaryFile(Income newIncome);
 //load income from binary file if necessary
 void LoadIncomeFromFile();
+void LoadIncomeSourceFromFile();
 
 //manage income source
 void listIncomeSources();

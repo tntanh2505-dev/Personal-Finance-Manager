@@ -33,4 +33,9 @@ void editWallet(int wallet_id, std::string new_name);
 void modifyWalletBalance(int wallet_id, double new_balance);
 void modifyWalletName(int wallet_id, std::string new_name);
 
+
+//
+void addWalletToBinaryFile(Wallet newWallet);
+
+
 #endif

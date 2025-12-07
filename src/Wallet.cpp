@@ -37,7 +37,8 @@ void addToWalletBalance(std::string wallet_name, double amount){
     newWallet.balance = amount;
 
     //add to record
-    wallet_record.wals[wallet_record.size++] = newWallet;
+    wallet_record.wals[wallet_record.size] = newWallet;
+    wallet_record.size++;
 }
 
 

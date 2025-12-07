@@ -12,9 +12,12 @@
 
 int main(){
 	//must load initial data from files 
+	LoadIncomeSourceFromFile();
+	LoadExpenseCategoryFromFile();
+	LoadWalletFromFile(); 
+
 	LoadIncomeFromFile();
 	LoadExpenseFromFile(); 
-	LoadWalletFromFile(); 
 
 	InputIncome();
 
