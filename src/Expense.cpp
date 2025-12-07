@@ -68,7 +68,7 @@ void LoadExpenseFromFile(){
         //attempt to read record until end of BINARY file
         Expense tempExpense;
 
-        if (!fin.read(reinterpret_cast<char*>(&tempExpense.date), sizeof(tempExpense.date))) return;
+        if (!fin.read(reinterpret_cast<char*>(&tempExpense.date), sizeof(tempExpense.date))) break;
         //assuming full record is present
         fin.read(reinterpret_cast<char*>(&tempExpense.category), sizeof(tempExpense.category));
         fin.read(reinterpret_cast<char*>(&tempExpense.amount), sizeof(tempExpense.amount));
@@ -93,9 +93,10 @@ void LoadExpenseCategoryFromFile(){
     while(true){
         std::string name;
         //attempt to read record until end of BINARY file
-        if (!fin.read(reinterpret_cast<char*>(&name), sizeof(name))) return;
+        if (!fin.read(reinterpret_cast<char*>(&name), sizeof(name))) break;
         addExpenseCategory(name);
     }
+    fin.close();
 }
 
 //managing categories

@@ -83,7 +83,7 @@ void LoadIncomeFromFile(){
         //attempt to read income records until end of BINARY File
         Income tempIncome;
         
-        if (!fin.read(reinterpret_cast<char*>(&tempIncome.date), sizeof(tempIncome.date))) return;
+        if (!fin.read(reinterpret_cast<char*>(&tempIncome.date), sizeof(tempIncome.date))) break;
         //if there's a date, assuming there's a full record
         fin.read(reinterpret_cast<char*>(&tempIncome.source), sizeof(tempIncome.source));
         fin.read(reinterpret_cast<char*>(&tempIncome.amount), sizeof(tempIncome.amount));
@@ -92,6 +92,7 @@ void LoadIncomeFromFile(){
 
         addIncomeRecord(tempIncome);
     }
+    fin.close();
 }
 void LoadIncomeSourceFromFile(){ 
     std::fstream fin("data/IncomeSourceRecord.bin",std::ios::in | std::ios::binary);
@@ -108,6 +109,7 @@ void LoadIncomeSourceFromFile(){
         if (!fin.read(reinterpret_cast<char*>(&name), sizeof(name))) break;
         addIncomeSource(name);
     }
+    fin.close();
 }
 
 //add, edit, remove income source functions 
