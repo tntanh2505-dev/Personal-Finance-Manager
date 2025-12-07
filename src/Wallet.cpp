@@ -54,11 +54,11 @@ void LoadWalletFromFile(){
     }
 
     // Read wallet records from file
-    int wallet_count;
-    fin.read(reinterpret_cast<char*>(&wallet_count), sizeof(wallet_count));
-    for (int i = 0; i < wallet_count; ++i){
+    while(true){
+        //attempt to read wallet until end of BINARY file
         Wallet tempWallet;
-        fin.read(reinterpret_cast<char*>(&tempWallet.name), sizeof(tempWallet.name));
+        if (!fin.read(reinterpret_cast<char*>(&tempWallet.name), sizeof(tempWallet.name))) break;
+        //assuming the rest of files is readable
         fin.read(reinterpret_cast<char*>(&tempWallet.balance), sizeof(tempWallet.balance));
 
         addToWalletBalance(tempWallet.name, tempWallet.balance);

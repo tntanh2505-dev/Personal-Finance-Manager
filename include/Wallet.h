@@ -37,5 +37,4 @@ void modifyWalletName(int wallet_id, std::string new_name);
 //
 void addWalletToBinaryFile(Wallet newWallet);
 
-
 #endif
