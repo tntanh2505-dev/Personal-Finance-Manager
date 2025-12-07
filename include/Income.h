@@ -24,8 +24,8 @@ struct Income{
 
 struct Income_Record{
     Income *incd;
-    int size;
-    int capacity;
+    int size = 0;
+    int capacity = 0;
 };
 
 extern Income_Record income_record;

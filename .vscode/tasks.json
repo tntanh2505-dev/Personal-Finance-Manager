@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "Build Personal Finance Manager",
+            "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                // 1. THIS LINE FIXES YOUR ERROR (Tells compiler where headers are)
+                "-I${workspaceFolder}/include",
+                // 2. THIS LINE COMPILES ALL YOUR CODE (Not just one file)
+                "${workspaceFolder}/src/*.cpp",
+                "-o",
+                // 3. THIS CREATES THE STANDALONE EXE IN YOUR MAIN FOLDER
+                "${workspaceFolder}/PersonalFinanceManager.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Builds the entire project into a standalone exe."
+        }
+    ]
+}

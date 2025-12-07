@@ -24,13 +24,34 @@ struct Expense{
 
 struct Expense_Record{
     Expense *exs;
-    int size;
-    int capacity;
+    int size = 0;
+    int capacity = 0;
+};
+
+struct Expense_Category{
+    std::string name;
+    int category_id;
+};
+
+struct Expense_Category_Record{
+    Expense_Category *categories;
+    int size = 0;
+    int capacity = 0;
 };
 
 extern Expense_Record expense_record;
+extern Expense_Category_Record expense_category_record;
+
 void InputExpense();
 void addExpenseRecord(Expense newExpense);
 void LoadExpenseFromFile();
+
+//manage category
+void addExpenseCategory(std::string category_name);
+void listExpenseCategories();
+void removeExpenseCategory(int category_id);
+void editExpenseCategory(int category_id, std::string new_name);
+void checkExistingExpenseCategory(std::string category_name);
+
 
 #endif

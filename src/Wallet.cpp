@@ -3,6 +3,7 @@
 Wallet_Record wallet_record;
 
 void addToWalletBalance(std::string wallet_name, double amount){
+
     // Find the wallet by wallet_id and add amount to its balance
     for (int i = 0; i < wallet_record.size; ++i){
         if (wallet_record.wals[i].name == wallet_name){
@@ -28,7 +29,6 @@ void addToWalletBalance(std::string wallet_name, double amount){
         delete[] wallet_record.wals;
         wallet_record.wals = new_wals;
         wallet_record.capacity = new_capacity;
-        delete[] new_wals;
     }
 
     Wallet newWallet;
@@ -38,4 +38,30 @@ void addToWalletBalance(std::string wallet_name, double amount){
 
     //add to record
     wallet_record.wals[wallet_record.size++] = newWallet;
+}
+
+
+//load wallet from binary file if necessary
+void LoadWalletFromFile(){ 
+    std::fstream fin("data/WalletRecord.bin",std::ios::in | std::ios::binary);
+
+    //If not opened, create a new file and return
+    if (!fin.is_open()){
+        std::ofstream fout("data/WalletRecord.bin",std::ios::out | std::ios::binary);
+        fout.close();
+        return;
+    }
+
+    // Read wallet records from file
+    int wallet_count;
+    fin.read(reinterpret_cast<char*>(&wallet_count), sizeof(wallet_count));
+    for (int i = 0; i < wallet_count; ++i){
+        Wallet tempWallet;
+        fin.read(reinterpret_cast<char*>(&tempWallet.name), sizeof(tempWallet.name));
+        fin.read(reinterpret_cast<char*>(&tempWallet.balance), sizeof(tempWallet.balance));
+
+        addToWalletBalance(tempWallet.name, tempWallet.balance);
+    }
+
+    fin.close();
 }

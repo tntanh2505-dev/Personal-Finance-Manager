@@ -19,7 +19,8 @@ void addIncomeRecord(Income newIncome){
         income_record.capacity = new_capacity;
     }
     /// Add new income record
-    income_record.incd[income_record.size++] = newIncome;
+    income_record.incd[income_record.size] = newIncome;
+    income_record.size++;
 }
 
 // Function to input income details from user
@@ -29,20 +30,16 @@ void InputIncome(){
     std::cout << "Enter date (YYYY-MM-DD): ";
     std::cin >> newIncome.date;
     
-    std::cout << "Enter source: ";
+    std::cout << "Choose source from the income list. If not listed, you must manually add new source" << std::endl;
+    std:: cout << "Enter source:";
     std::cin >> newIncome.source;
-    
-    std::cout << "Enter source ID: ";
-    std::cin >> newIncome.source_id;
     
     std::cout << "Enter amount: ";
     std::cin >> newIncome.amount;
     
+    std::cout << "Choose wallet from the wallet list. If not listed, you must manually add new wallet" << std::endl;
     std::cout << "Enter wallet: ";
     std::cin >> newIncome.wallet;
-    
-    std::cout << "Enter wallet ID: ";
-    std::cin >> newIncome.wallet_id;
     
     std::cout << "Enter description: ";
     std::cin.ignore(); // to ignore the newline character left in the buffer

@@ -23,4 +23,6 @@ struct Wallet_Record{
 extern Wallet_Record wallet_record;
 void addToWalletBalance(std::string wallet_name, double amount);
 
+void LoadWalletFromFile();
+
 #endif
