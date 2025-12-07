@@ -63,15 +63,13 @@ void LoadExpenseFromFile(){
         return;
     }
 
-    //read file content into expense_record
-    int record_count = 0;
-    fin.read(reinterpret_cast<char*>(&record_count), sizeof(int));
-
-    //read each expense record and add to expense_record
-    for(int i = 0; i < record_count; ++i){
+    //attempt to read file
+    while (true){
+        //attempt to read record until end of BINARY file
         Expense tempExpense;
 
-        fin.read(reinterpret_cast<char*>(&tempExpense.date), sizeof(tempExpense.date));
+        if (!fin.read(reinterpret_cast<char*>(&tempExpense.date), sizeof(tempExpense.date))) return;
+        //assuming full record is present
         fin.read(reinterpret_cast<char*>(&tempExpense.category), sizeof(tempExpense.category));
         fin.read(reinterpret_cast<char*>(&tempExpense.amount), sizeof(tempExpense.amount));
         fin.read(reinterpret_cast<char*>(&tempExpense.wallet), sizeof(tempExpense.wallet));
@@ -91,14 +89,11 @@ void LoadExpenseCategoryFromFile(){
         return;
     }
 
-    //read file content into expense_record
-    int record_count = 0;
-    fin.read(reinterpret_cast<char*>(&record_count), sizeof(record_count));
-
     //read each expense record and add to expense_record
-    for(int i = 0; i < record_count; ++i){
+    while(true){
         std::string name;
-        fin.read(reinterpret_cast<char*>(&name), sizeof(name));
+        //attempt to read record until end of BINARY file
+        if (!fin.read(reinterpret_cast<char*>(&name), sizeof(name))) return;
         addExpenseCategory(name);
     }
 }
@@ -129,6 +124,8 @@ void addExpenseCategory(std::string category_name){
     newExpense.category_id = expense_category_record.size; // Simple incremental ID
     expense_category_record.categories[expense_category_record.size] = newExpense;
     expense_category_record.size++;
+
+    addExpenseCategoryToBinaryFile(newExpense);
 }
 
 void listExpenseCategories(){
@@ -181,3 +178,11 @@ void addExpenseToBinaryFile(Expense newExpense){
     fout.close();
 }
 
+void addExpenseCategoryToBinaryFile(Expense_Category newCategory){
+    std::fstream fout("data/ExpenseCategoryRecord.bin", std::ios::out | std::ios::binary | std::ios::app);
+
+    //write expense category to file
+    fout.write(reinterpret_cast<const char*>(&newCategory.name), sizeof(newCategory.name));
+
+    fout.close();
+}

@@ -56,5 +56,6 @@ void editExpenseCategory(int category_id, std::string new_name);
 
 //binary file operations
 void addExpenseToBinaryFile(Expense newExpense);
+void addExpenseCategoryToBinaryFile(Expense_Category newCategory);
 
 #endif
