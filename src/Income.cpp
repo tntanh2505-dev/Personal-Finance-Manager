@@ -96,10 +96,10 @@ void LoadIncomeFromFile(){
     }
 }
 void LoadIncomeSourceFromFile(){ 
-    std::fstream fin("data/IncomeRecord.bin",std::ios::in | std::ios::binary);
+    std::fstream fin("data/IncomeSourceRecord.bin",std::ios::in | std::ios::binary);
 
     if (!fin.is_open()){
-        std::ofstream fout("data/IncomeRecord.bin",std::ios::out | std::ios::binary);
+        std::ofstream fout("data/IncomeSourceRecord.bin",std::ios::out | std::ios::binary);
         fout.close();
         return;
     }

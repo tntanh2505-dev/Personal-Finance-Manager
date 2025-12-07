@@ -83,10 +83,10 @@ void LoadExpenseFromFile(){
     fin.close();
 }
 void LoadExpenseCategoryFromFile(){ 
-    std::fstream fin("data/ExpenseRecord.bin",std::ios::in | std::ios::binary);
+    std::fstream fin("data/ExpenseCategoryRecord.bin",std::ios::in | std::ios::binary);
 
     if (!fin.is_open()){
-        std::ofstream fout("data/ExpenseRecord.bin",std::ios::out | std::ios::binary);
+        std::ofstream fout("data/ExpenseCategoryRecord.bin",std::ios::out | std::ios::binary);
         fout.close();
         return;
     }
