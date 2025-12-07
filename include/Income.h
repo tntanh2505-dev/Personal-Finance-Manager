@@ -55,4 +55,5 @@ void listIncomeSources();
 void addIncomeSource(std::string source_name);
 void removeIncomeSource(int source_id);
 void editIncomeSource(int source_id, std::string new_name);
+void addIncomeSourceToFile(std::string source_name);
 #endif

@@ -79,19 +79,17 @@ void LoadIncomeFromFile(){
         return;
       }
     
-    // Read existing records from the file
-    int record_count = 0;
-    fin.read(reinterpret_cast<char*>(&record_count), sizeof(record_count));
-
-    // Initialize income_record
-    for (int i = 0 ; i < record_count ; i++){
+    while (true){
+        //attempt to read income records until end of BINARY File
         Income tempIncome;
         
-        fin.read(reinterpret_cast<char*>(&tempIncome.date), sizeof(tempIncome.date));
+        if (!fin.read(reinterpret_cast<char*>(&tempIncome.date), sizeof(tempIncome.date))) return;
+        //if there's a date, assuming there's a full record
         fin.read(reinterpret_cast<char*>(&tempIncome.source), sizeof(tempIncome.source));
         fin.read(reinterpret_cast<char*>(&tempIncome.amount), sizeof(tempIncome.amount));
         fin.read(reinterpret_cast<char*>(&tempIncome.wallet), sizeof(tempIncome.wallet));
         fin.read(reinterpret_cast<char*>(&tempIncome.description), sizeof(tempIncome.description));
+
         addIncomeRecord(tempIncome);
     }
 }
@@ -104,14 +102,10 @@ void LoadIncomeSourceFromFile(){
         return;
     }
 
-    //read file content into income_source_record
-    int record_count = 0;
-    fin.read(reinterpret_cast<char*>(&record_count), sizeof(record_count));
-
-    //read each income record and add to income_source_record
-    for(int i = 0; i < record_count; ++i){
+    while (true){
+    //attempt to read until end of BINARY File
         std::string name;
-        fin.read(reinterpret_cast<char*>(&name), sizeof(name));
+        if (!fin.read(reinterpret_cast<char*>(&name), sizeof(name))) break;
         addIncomeSource(name);
     }
 }
@@ -145,6 +139,9 @@ void addIncomeSource(std::string source_name){
     newSource.source_id = income_source_record.size + 1; // Simple incremental ID
     income_source_record.sources[income_source_record.size] = newSource;
     income_source_record.size++;
+
+    //add to file
+    addIncomeSourceToFile(source_name);
 }
 
 void editIncomeSource(int source_id, std::string new_name){
@@ -169,3 +166,11 @@ void removeIncomeSource(int source_id){
     }
 }
 
+void addIncomeSourceToFile(std::string source_name){
+    std::fstream fout("data/IncomeSourceRecord.bin",std::ios::out | std::ios::binary | std::ios::app);
+
+    // Write the income source to the file
+    fout.write(reinterpret_cast<char*>(&source_name), sizeof(source_name));
+
+    fout.close();
+}
