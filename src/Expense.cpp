@@ -46,6 +46,7 @@ void InputExpense(){
     std::cin.ignore(); // to ignore the newline character left in the buffer
     std::getline(std::cin, newExpense.description);
     
+    addExpenseCategory(newExpense.category); // Ensure category is added automatically if user forgets
     addExpenseRecord(newExpense);
     addToWalletBalance(newExpense.wallet, -newExpense.amount);
 }
@@ -115,8 +116,33 @@ void listExpenseCategories(){
     }
 }
 
+void removeExpenseCategory(int category_id){
+    int index = -1;
+    for (int i = 0; i < expense_category_record.size; ++i){
+        if (expense_category_record.categories[i].category_id== category_id){
+            index = i;
+            break;
+        }
+    }
 
+    if (index == -1) return;//category not found
 
+    if (index != -1){
+        for (int i = index; i < expense_category_record.size - 1; ++i){
+            expense_category_record.categories[i] = expense_category_record.categories[i + 1];
+        }
+        expense_category_record.size--;
+    }
+}
+
+void editExpenseCategory(int id, std::string new_name){
+    for (int i = 0; i < expense_category_record.size; ++i){
+        if (expense_category_record.categories[i].category_id == id){
+            expense_category_record.categories[i].name = new_name;
+            return;
+        }
+    }
+}
 
 
 

@@ -51,7 +51,5 @@ void addExpenseCategory(std::string category_name);
 void listExpenseCategories();
 void removeExpenseCategory(int category_id);
 void editExpenseCategory(int category_id, std::string new_name);
-void checkExistingExpenseCategory(std::string category_name);
-
 
 #endif

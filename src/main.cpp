@@ -15,9 +15,8 @@ int main(){
 	LoadIncomeFromFile();
 	LoadExpenseFromFile(); 
 	LoadWalletFromFile(); 
-    
-	addExpenseCategory("Food");
-	InputExpense();
+
+	InputIncome();
 
 	return 0;
 }

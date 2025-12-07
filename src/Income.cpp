@@ -2,6 +2,7 @@
 #include "Wallet.h"
 
 Income_Record income_record;
+Income_Source_Record income_source_record;
 //add income record to dynamic array
 void addIncomeRecord(Income newIncome){
     //  double the capacity if size reaches capacity
@@ -45,6 +46,7 @@ void InputIncome(){
     std::cin.ignore(); // to ignore the newline character left in the buffer
     std::getline(std::cin, newIncome.description);
     
+    addIncomeSource(newIncome.source); // Ensure source is added automatically if user forgets
     addIncomeRecord(newIncome);
     addToWalletBalance(newIncome.wallet, newIncome.amount);
 }
@@ -77,3 +79,57 @@ void LoadIncomeFromFile(){
         addIncomeRecord(tempIncome);
     }
 }
+
+//add, edit, remove income source functions 
+void listIncomeSources(){
+    std::cout << "Income Sources:" << std::endl;
+    for (int i = 0; i < income_source_record.size; ++i){
+        std::cout << income_source_record.sources[i].source_id << ". " << income_source_record.sources[i].name << std::endl;
+    }
+}
+
+void addIncomeSource(std::string source_name){
+    //if size == capacity, double the capacity
+    if (income_source_record.size == income_source_record.capacity){
+        int new_capacity = (income_source_record.capacity == 0) ? 1 : income_source_record.capacity * 2;
+        Income_Source *new_sources = new Income_Source[new_capacity];
+        for (int i = 0; i < income_source_record.size; ++i){
+            new_sources[i] = income_source_record.sources[i];
+        }
+
+        //deleting old array and updating pointer and capacity
+        delete[] income_source_record.sources;
+        income_source_record.sources = new_sources;
+        income_source_record.capacity = new_capacity;
+    }
+
+    //add to record
+    Income_Source newSource;
+    newSource.name = source_name;
+    newSource.source_id = income_source_record.size + 1; // Simple incremental ID
+    income_source_record.sources[income_source_record.size] = newSource;
+    income_source_record.size++;
+}
+
+void editIncomeSource(int source_id, std::string new_name){
+    for (int i = 0; i < income_source_record.size; ++i){
+        if (income_source_record.sources[i].source_id == source_id){
+            income_source_record.sources[i].name = new_name;
+            return;
+        }
+    }
+}
+
+void removeIncomeSource(int source_id){
+    for (int i = 0; i < income_source_record.size; ++i){
+        if (income_source_record.sources[i].source_id == source_id){
+            //shift elements to the left to fill the gap
+            for (int j = i; j < income_source_record.size - 1; ++j){
+                income_source_record.sources[j] = income_source_record.sources[j + 1];
+            }
+            income_source_record.size--;
+            return;
+        }
+    }
+}
+
