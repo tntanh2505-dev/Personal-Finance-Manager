@@ -8,4 +8,8 @@
 #include<math.h>
 #include<cmath>
 
+struct test {
+    int x;
+};
+
 #endif
