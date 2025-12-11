@@ -1,5 +1,5 @@
 #include "Recurring.h"
-#include "recurring.h"
+#include "Income.h"
 #include "Expense.h"
 #include "Wallet.h"
 #include "WriteString.h"
@@ -67,29 +67,55 @@ void appendRecurringToFile(Recurring newRecurring){
 }
 
 // Input a Recurring from the console
-void InputIncome() {
-    Income newIncome;
-    
-    std::cout << "Enter date (YYYY-MM-DD): ";
-    std::cin >> newIncome.date;
-    
-    std::cout << "Choose source from the income list. If not listed, you must manually add new source" << std::endl;
-    std::cout << "Enter source:";
-    std::cin >> newIncome.source;
-    
-    std::cout << "Enter amount: ";
-    std::cin >> newIncome.amount;
-    
-    std::cout << "Choose wallet from the wallet list. If not listed, you must manually add new wallet" << std::endl;
-    std::cout << "Enter wallet: ";
-    std::cin >> newIncome.wallet;
-    
-    std::cout << "Enter description: ";
-    std::cin.ignore(); // to ignore the newline character left in the buffer
-    std::getline(std::cin, newIncome.description);
-    
-    addIncomeSource(newIncome.source); // Ensure source is added automatically if user forgets
-    addIncomeRecord(newIncome);
-    addToWalletBalance(newIncome.wallet, newIncome.amount);
-}
+void inputRecurringFromConsole() {
+    Recurring newRecurring;
 
+    std::cout << "Enter the type of transaction (1 for Income, 0 for Expense): ";
+    std::cin >> newRecurring.typeTransaction;
+
+    std::cout << "Enter transaction date (YYYY-MM-DD): ";
+    std::cin >> newRecurring.date;
+
+    std::cout << "Enter amount: ";
+    std::cin >> newRecurring.amount;
+
+    if (newRecurring.typeTransaction) {
+        listIncomeSources();
+        std::cout << "Choose income source id: ";
+        std::cin >> newRecurring.transaction_id;
+    }
+    else {
+        listExpenseCategories();
+        std::cout << "Choose expense source id: ";
+        std::cin >> newRecurring.transaction_id;
+    }
+
+    listWallets();
+    std::cout << "Choose wallet id: ";
+    std::cin >> newRecurring.wallet_id;
+
+    std::cout << "Enter description: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, newRecurring.description);
+
+    // Creating ID from size
+    newRecurring.recurring_id = recurring_record.size + 1;
+
+    std::cout << "Please enter the start date (YYYY-MM-DD): ";
+    std::cin >> newRecurring.startDate;
+
+    std::cout << "Please enter the end date (YYYY-MM-DD) (optional = 0): ";
+    std::cin >> newRecurring.endDate;
+    if (newRecurring.endDate == "0") { // Optional option
+        newRecurring.endDate = "";
+    } 
+
+    // Reset applied month
+    newRecurring.lastAppliedMonth = 0;
+
+    // Add new Recurring
+        // to the Record
+        addRecurringRecord(newRecurring);
+        // to the BIN file
+        appendRecurringToFile(newRecurring);
+}
